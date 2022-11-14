@@ -1,19 +1,10 @@
 from tuote import Tuote
-from kirjanpito import Kirjanpito
+from kirjanpito import Kirjanpito as def_kirjanpito
 
 
 class Varasto:
-    __instanssi = None
-
-    @staticmethod
-    def get_instance():
-        if not Varasto.__instanssi:
-            Varasto.__instanssi = Varasto()
-
-        return Varasto.__instanssi
-
-    def __init__(self):
-        self._kirjanpito = Kirjanpito.get_instance()
+    def __init__(self, kirjanpito=def_kirjanpito):
+        self._kirjanpito = kirjanpito
         self._saldot = {}
         self._alusta_tuotteet()
 
@@ -33,9 +24,7 @@ class Varasto:
 
     def ota_varastosta(self, tuote):
         saldo = self.saldo(tuote.id)
-
         self._saldot[tuote] = saldo - 1
-
         self._kirjanpito.lisaa_tapahtuma(f"otettiin varastosta {tuote}")
 
     def palauta_varastoon(self, tuote):
