@@ -1,5 +1,5 @@
 from entities.user import User
-
+import re, sys , pdb
 
 class UserInputError(Exception):
     pass
@@ -14,6 +14,8 @@ class UserService:
         self._user_repository = user_repository
 
     def check_credentials(self, username, password):
+
+
         if not username or not password:
             raise UserInputError("Username and password are required")
 
@@ -36,5 +38,14 @@ class UserService:
     def validate(self, username, password):
         if not username or not password:
             raise UserInputError("Username and password are required")
+
+        if self._user_repository.find_by_username(username):
+            raise UserInputError("Username is taken/already in use")
+        
+        if bool(re.match("^[a-z]+$", username) == False) or (len(username) < 3):
+            raise UserInputError("Username must contain at least 3 characters from [a-z]")
+        
+        if (re.match("^[a-z]+$", password)) or (len(password) < 8):
+            raise UserInputError("Password min lenght is 8 and it should contain characters from [a-z] and atleast one symbol")
 
         # toteuta loput tarkastukset tänne ja nosta virhe virhetilanteissa
