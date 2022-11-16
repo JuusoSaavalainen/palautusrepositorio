@@ -32,6 +32,34 @@ Register With Nonmatching Password And Password Confirmation
     Set Password Confirmation  kalle122
     Click Button  Register
     Page Should Contain  Password do not match with Password confirmation
+
+Login After Successful Registration
+    Set Username  kalle
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click Button  Register
+    Title Should Be  Welcome to Ohtu Application!
+    Go to Login Page
+    Login Page Should Be Open
+    Set Username  kalle
+    Set Password  kalle123
+    Submit Credentials
+    Main Page Should Be Open
+
+Login After Failed Registration
+    Set Username  kalle
+    Set Password  kalle123
+    Set Password Confirmation  kalle122
+    Click Button  Register
+    Page Should Contain  Password do not match with Password confirmation
+    Go to Login Page
+    Login Page Should Be Open
+    Set Username  kalle
+    Set Password  kalle123
+    Submit Credentials
+    Login Should Fail With Message  Invalid username or password 
+
+
     
 *** Keywords ***
 
@@ -53,3 +81,8 @@ Set Password Confirmation
 Reset App And Go To Register Page
     Reset Application
     Go To Register Page
+
+Login Should Fail With Message
+    [Arguments]  ${message}
+    Login Page Should Be Open
+    Page Should Contain  ${message}
