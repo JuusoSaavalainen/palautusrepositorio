@@ -52,4 +52,14 @@ class HasFewerThan:
     def test(self, player):
         player_value = getattr(player, self._attr)
         return player_value < self._value
+
+class Or:
+    def __init__(self, *matcher):
+        self._matchers = matcher
+
+    def test(self, player):
+        for m in self._matchers:
+            if m.test(player):
+                return True
+        return False
     
